@@ -25,12 +25,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # See http://bugs.python.org/issue19846
 ENV LANG C.UTF-8
-ARG PYTHON=python3
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ${PYTHON} \
-    ${PYTHON}-dev \
-    ${PYTHON}-distutils \
+    python-dev \
+    python3-distutils \
     automake \
     build-essential \
     ca-certificates \
@@ -70,11 +68,6 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.9 0
 RUN curl -fSsL -O https://bootstrap.pypa.io/get-pip.py && \
     python3 get-pip.py && \
     rm get-pip.py
-
-# Some TF tools expect a "python" binary
-RUN ln -sf $(which ${PYTHON}) /usr/local/bin/python && \
-    ln -sf $(which ${PYTHON}) /usr/local/bin/python3 && \
-    ln -sf $(which ${PYTHON}) /usr/bin/python
 
 RUN python -m pip --no-cache-dir install \
     'future>=0.17.1' \
